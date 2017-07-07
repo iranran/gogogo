@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>hello.programmer</groupId>
+  <artifactId>gogogo</artifactId>
+  <packaging>pom</packaging>
+  <version>1.0-SNAPSHOT</version>
+
+  <modules>
+    <module>commontools</module>
+  </modules>
+
+  <name>gogogo</name>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+    <!-- 版本信息 -->
+    <slf4j.version>1.7.25</slf4j.version>
+    <logback.version>1.1.2</logback.version>
+    <dubbo.version>2.8.4</dubbo.version>
+    <netty_version>3.7.0.Final</netty_version>
+    <junit.version>4.12</junit.version>
+    <spring.version>3.2.9.RELEASE</spring.version>
+    <druid.version>1.0.12</druid.version>
+    <spring.data.redis.version>1.0.3.RELEASE</spring.data.redis.version>
+    <jedis.version>2.1.0</jedis.version>
+    <spring.rabbit.version>1.3.5.RELEASE</spring.rabbit.version>
+    <spring-amqp.version>1.3.3.RELEASE</spring-amqp.version>
+    <mysql.version>5.1.36</mysql.version>
+    <servlet_api.version>3.1.0</servlet_api.version>
+    <jstl.version>1.2</jstl.version>
+    <standard.version>1.1.2</standard.version>
+    <jsp-api.version>2.2</jsp-api.version>
+    <zookeeper.version>3.4.6</zookeeper.version>
+    <zkclient.version>0.1</zkclient.version>
+    <curator.version>2.8.0</curator.version>
+    <aspectj.version>1.6.9</aspectj.version>
+    <kryo.version>2.24.0</kryo.version>
+    <kryo-serializers.version>0.26</kryo-serializers.version>
+    <tbschedule.version>3.2.18-SNAPSHOT</tbschedule.version>
+    <gson.version>2.3.1</gson.version>
+    <commons-beanutils.version>1.8.3</commons-beanutils.version>
+    <commons-lang.version>2.6</commons-lang.version>
+    <aliyun-sdk-oss.version>2.0.1</aliyun-sdk-oss.version>
+    <amqp.client.version>3.4.1</amqp.client.version>
+    <commons.httpclient.version>3.1</commons.httpclient.version>
+    <kaptcha.version>2.3.2</kaptcha.version>
+    <net.sourceforge.jexcelapi.jxl.version>2.6.12</net.sourceforge.jexcelapi.jxl.version>
+    <org.apache.poi.version>3.10.1</org.apache.poi.version>
+    <org.apache.poi-ooxml.version>3.9</org.apache.poi-ooxml.version>
+    <net.sf.json-lib.version>2.4</net.sf.json-lib.version>
+    <commons-io.version>2.4</commons-io.version>
+    <commons-codec.version>1.6</commons-codec.version>
+    <commons-collections.version>3.2.1</commons-collections.version>
+    <commons-fileupload.version>1.2.2</commons-fileupload.version>
+    <net.sourceforge.jexcelapi.jxl.version>2.6.12</net.sourceforge.jexcelapi.jxl.version>
+    <org.apache.poi.version>3.10.1</org.apache.poi.version>
+    <org.apache.poi-ooxml.version>3.9</org.apache.poi-ooxml.version>
+    <net.sf.json-lib.version>2.4</net.sf.json-lib.version>
+    <commons-lang.version>2.6</commons-lang.version>
+    <fastjson.version>1.2.29</fastjson.version>
+    <dom4j.version>1.6.1</dom4j.version>
+    <bcprov-jdk15on.version>1.52</bcprov-jdk15on.version>
+    <ezmorph.version>1.0.6</ezmorph.version>
+    <jackson-core-asl.version>1.9.13</jackson-core-asl.version>
+    <jackson-mapper-asl.version>1.9.13</jackson-mapper-asl.version>
+    <xom.version>1.2.10</xom.version>
+    <json-lib.version>2.4</json-lib.version>
+    <xstream.version>1.4.7</xstream.version>
+    <xpp3.version>1.1.4c</xpp3.version>
+    <jpush-client.version>3.1.2</jpush-client.version>
+    <guava.version>17.0</guava.version>
+    <mockwebserver.version>1.5.4</mockwebserver.version>
+    <emay.client.version>1.0</emay.client.version>
+    <zxing.version>3.2.1</zxing.version>
+    <config-toolkit.version>3.1.2-RELEASE</config-toolkit.version>
+    <lombok.version>1.16.6</lombok.version>
+    <httpcomponents.version>4.3.6</httpcomponents.version>
+    <httpcore.version>4.3.3</httpcore.version>
+    <freemarker.version>2.3.23</freemarker.version>
+    <mybatis.version>3.2.8</mybatis.version>
+    <mybatis-spring.version>1.2.0</mybatis-spring.version>
+    <hibernate-validator.version>5.2.4.Final</hibernate-validator.version>
+    <javax-el.version>2.2.4</javax-el.version>
+    <sftp.version>0.1.54</sftp.version>
+
+    <!-- for maven compiler plugin -->
+    <maven_deploy_skip>false</maven_deploy_skip>
+    <java_source_version>1.8</java_source_version>
+    <java_target_version>1.8</java_target_version>
+    <maven_compiler_plugin_version>3.3</maven_compiler_plugin_version>
+    <maven_source_plugin_version>2.4</maven_source_plugin_version>
+    <maven_jar_plugin_version>2.6</maven_jar_plugin_version>
+    <maven_war_plugin_version>2.1.1</maven_war_plugin_version>
+    <maven_install_plugin_version>2.5.2</maven_install_plugin_version>
+    <maven_deploy_plugin_version>2.7</maven_deploy_plugin_version>
+    <maven_surefire_plugin_version>2.18.1</maven_surefire_plugin_version>
+    <maven_resources_plugin_version>2.7</maven_resources_plugin_version>
+  </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>com.alibaba</groupId>
+        <artifactId>druid</artifactId>
+        <version>${druid.version}</version>
+      </dependency>
+
+      <!-- slf4j -->
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-api</artifactId>
+        <version>${slf4j.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>jcl-over-slf4j</artifactId>
+        <version>${slf4j.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>log4j-over-slf4j</artifactId>
+        <version>${slf4j.version}</version>
+      </dependency>
+
+      <!-- Logback -->
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>jul-to-slf4j</artifactId>
+        <version>${slf4j.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>ch.qos.logback</groupId>
+        <artifactId>logback-classic</artifactId>
+        <version>${logback.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>ch.qos.logback</groupId>
+        <artifactId>logback-core</artifactId>
+        <version>${logback.version}</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+
+
+  <build>
+    <!-- 插件管理 -->
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-jar-plugin</artifactId>
+          <version>${maven_jar_plugin_version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-war-plugin</artifactId>
+          <version>${maven_war_plugin_version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-install-plugin</artifactId>
+          <version>${maven_install_plugin_version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-deploy-plugin</artifactId>
+          <version>${maven_deploy_plugin_version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>${maven_compiler_plugin_version}</version>
+          <configuration>
+            <source>${java_source_version}</source>
+            <target>${java_target_version}</target>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>${maven_surefire_plugin_version}</version>
+          <configuration>
+            <testFailureIgnore>true</testFailureIgnore>
+            <skip>true</skip>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-resources-plugin</artifactId>
+          <version>${maven_resources_plugin_version}</version>
+          <configuration>
+            <encoding>${project.build.sourceEncoding}</encoding>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-source-plugin</artifactId>
+          <version>${maven_source_plugin_version}</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+
+</project>
