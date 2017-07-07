@@ -313,25 +313,12 @@ public  class Criteria {
      */
     public String build(String sql,boolean withWhere){
         StringBuffer buffer = new StringBuffer();
-        boolean firstCondition = true;
         for(int i = 0; i < criterions.size(); i++){
             Criterion criterion = criterions.get(i);
-//            String condition = criterion.getCondition();
-//            String column = condition.substring(0,condition.indexOf(" "));
-//            Object val = criterion.getValue();
-//            //System.out.println(column);
-//            if(preCheckMap.containsKey(column+":null") && val == null){
-//                continue;
-//            }
-//
-//            if(preCheckMap.containsKey(column+":empty") && (val == null || val.toString().length() == 0)){
-//                continue;
-//            }
 
-            if(!firstCondition){
+            if(i == 0){
                 buffer.append(" AND ");
             }
-            firstCondition = false;
 
             if(criterion.isNoValue()){
                 buffer.append(criterion.getCondition());

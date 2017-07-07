@@ -11,6 +11,7 @@
 
   <modules>
     <module>commontools</module>
+    <module>learning</module>
   </modules>
 
   <name>gogogo</name>
