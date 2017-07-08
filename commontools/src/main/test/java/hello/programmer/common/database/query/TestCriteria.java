@@ -4,7 +4,6 @@ package hello.programmer.common.database.query;
 import static  org.junit.Assert.*;
 import org.junit.Test;
 
-import java.util.*;
 
 /**
  * @author liwei

@@ -56,7 +56,7 @@
     <org.apache.poi-ooxml.version>3.9</org.apache.poi-ooxml.version>
     <net.sf.json-lib.version>2.4</net.sf.json-lib.version>
     <commons-io.version>2.4</commons-io.version>
-    <commons-codec.version>1.6</commons-codec.version>
+    <commons-codec.version>1.9</commons-codec.version>
     <commons-collections.version>3.2.1</commons-collections.version>
     <commons-fileupload.version>1.2.2</commons-fileupload.version>
     <net.sourceforge.jexcelapi.jxl.version>2.6.12</net.sourceforge.jexcelapi.jxl.version>
@@ -144,6 +144,16 @@
         <groupId>ch.qos.logback</groupId>
         <artifactId>logback-core</artifactId>
         <version>${logback.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>commons-codec</groupId>
+        <artifactId>commons-codec</artifactId>
+        <version>${commons-codec.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>commons-io</groupId>
+        <artifactId>commons-io</artifactId>
+        <version>${commons-io.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
