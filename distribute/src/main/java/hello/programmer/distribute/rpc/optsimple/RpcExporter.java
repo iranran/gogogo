@@ -1,4 +1,4 @@
-package hello.programmer.distribute.rpc.simple;
+package hello.programmer.distribute.rpc.optsimple;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -7,17 +7,38 @@ import java.lang.reflect.Method;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 /**
  * Created on 2017-7-11.
  */
-public class RpcExporter {
+public class RpcExporter implements Server{
 
     static Executor executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 
-    public static void exporter(String host, int port) throws Exception{
+    private static final Map<String, Class> serviceRegistry = new HashMap<>();
+
+    private static boolean isRunning = false;
+
+    private int port;
+    private String host;
+
+    public RpcExporter(String host, int port){
+        this.host = host;
+        this.port = port;
+    }
+
+    @Override
+    public void stop() {
+        isRunning = false;
+
+    }
+
+    @Override
+    public void start() throws IOException {
         ServerSocket server = new ServerSocket();
         server.bind(new InetSocketAddress(host , port));
 
@@ -29,6 +50,21 @@ public class RpcExporter {
         finally {
             server.close();
         }
+    }
+
+    @Override
+    public void register(Class serviceInterface, Class impl) {
+        serviceRegistry.put(serviceInterface.getName(), impl);
+    }
+
+    @Override
+    public boolean isRunning() {
+        return isRunning;
+    }
+
+    @Override
+    public int getPort() {
+        return 0;
     }
 
     private static class ExporterTask implements Runnable{
@@ -47,7 +83,8 @@ public class RpcExporter {
             try {
                 input = new ObjectInputStream(client.getInputStream());
                 String interfaceName = input.readUTF();
-                Class<?> service = Class.forName(interfaceName);
+
+                Class<?> service = serviceRegistry.get(interfaceName);
                 String methodName = input.readUTF();
                 Class<?>[] parameterTypes = (Class<?>[])input.readObject();
                 Object[] arguments = (Object[])input.readObject();

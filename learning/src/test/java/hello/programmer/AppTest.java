@@ -4,6 +4,8 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import java.math.BigDecimal;
+
 /**
  * Unit test for simple App.
  */
@@ -33,6 +35,15 @@ public class AppTest
      */
     public void testApp()
     {
-        assertTrue( true );
+        BigDecimal a = getAmoutCount(133,new BigDecimal(5.0),new BigDecimal(9876543.00),new BigDecimal(365));
+        System.out.println(a);
+
+        System.out.println(a.subtract(new BigDecimal(171824.78)));
+
+        System.out.println(a.subtract(new BigDecimal(10).divide(new BigDecimal(2))));
+    }
+
+    private  BigDecimal getAmoutCount(int days,BigDecimal aunualInterestRate,BigDecimal amount,BigDecimal yearDays ){
+        return amount.multiply(aunualInterestRate.divide(new BigDecimal(100))).multiply(new BigDecimal(days)).divide(yearDays, 2, BigDecimal.ROUND_HALF_UP);
     }
 }

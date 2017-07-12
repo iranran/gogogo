@@ -14,13 +14,19 @@ public  class Criteria {
 
     private List<Criterion> criterions;
 
+    private List<String> appendCondtions;
+
     private String orderByClause;
 
     private Map<String,Boolean> preCheckMap = new HashMap<>();
 
-    public Criteria() {
+    public static  Criteria create(){
+        return new Criteria();
+    }
+    private Criteria() {
         super();
         criterions = new ArrayList<>();
+        appendCondtions = new ArrayList<>();
     }
 
     public boolean isValid() {
@@ -30,6 +36,15 @@ public  class Criteria {
     public void clear(){
         preCheckMap.clear();
         criterions.clear();
+        appendCondtions.clear();
+    }
+
+    public Criteria append(String condition){
+        if(condition == null || condition.length() == 0){
+            throw new RuntimeException("参数不能为空");
+        }
+        appendCondtions.add(condition);
+        return this;
     }
 
     public Criteria preNull(String column){
@@ -316,7 +331,7 @@ public  class Criteria {
         for(int i = 0; i < criterions.size(); i++){
             Criterion criterion = criterions.get(i);
 
-            if(i == 0){
+            if(i != 0){
                 buffer.append(" AND ");
             }
 
@@ -359,6 +374,17 @@ public  class Criteria {
                 }
                 buffer.append(")");
             }
+        }
+
+
+        for(int i = 0; i < appendCondtions.size(); i++){
+            if(i == 0 && criterions.size() == 0){
+                buffer.append(appendCondtions.get(i));
+            }
+            else{
+                buffer.append(" AND " + appendCondtions.get(i));
+            }
+
         }
 
         String whereString = buffer.toString();

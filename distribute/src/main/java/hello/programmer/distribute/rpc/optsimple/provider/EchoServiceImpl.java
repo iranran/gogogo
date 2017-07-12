@@ -1,7 +1,7 @@
-package hello.programmer.distribute.rpc.simple.provider;
+package hello.programmer.distribute.rpc.optsimple.provider;
 
-import hello.programmer.distribute.rpc.simple.api.EchoDomain;
-import hello.programmer.distribute.rpc.simple.api.EchoService;
+import hello.programmer.distribute.rpc.optsimple.api.EchoDomain;
+import hello.programmer.distribute.rpc.optsimple.api.EchoService;
 
 /**
  * Created on 2017-7-11.

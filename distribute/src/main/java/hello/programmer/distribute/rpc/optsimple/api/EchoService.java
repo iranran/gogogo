@@ -1,4 +1,4 @@
-package hello.programmer.distribute.rpc.simple.api;
+package hello.programmer.distribute.rpc.optsimple.api;
 
 /**
  * Created  on 2017-7-11.

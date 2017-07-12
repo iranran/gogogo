@@ -1,8 +1,8 @@
-package hello.programmer.distribute.rpc.simple;
+package hello.programmer.distribute.rpc.optsimple;
 
-import hello.programmer.distribute.rpc.simple.api.EchoDomain;
-import hello.programmer.distribute.rpc.simple.api.EchoService;
-import hello.programmer.distribute.rpc.simple.provider.EchoServiceImpl;
+import hello.programmer.distribute.rpc.optsimple.api.EchoDomain;
+import hello.programmer.distribute.rpc.optsimple.api.EchoService;
+import hello.programmer.distribute.rpc.optsimple.provider.EchoServiceImpl;
 
 import java.net.InetSocketAddress;
 
@@ -14,7 +14,9 @@ public class RpcTest {
         //start the service
         new Thread(() -> {
             try{
-                RpcExporter.exporter("localhost",8082);
+                Server serviceServer = new RpcExporter("localhost",8082);
+                serviceServer.register(EchoService.class, EchoServiceImpl.class);
+                serviceServer.start();
             }
             catch (Exception e){
 
@@ -23,7 +25,8 @@ public class RpcTest {
 
         //client invoke
         RpcImporter<EchoService> importer = new RpcImporter<>();
-        EchoService echo = importer.importer(EchoServiceImpl.class,new InetSocketAddress("localhost",8082));
+        EchoService echo = importer.importer(EchoService.class,new InetSocketAddress("localhost",8082));
+        System.out.println(echo);
         for(int i=0; i<100; i++){
             System.out.println(echo.echo("hi " + i));
         }

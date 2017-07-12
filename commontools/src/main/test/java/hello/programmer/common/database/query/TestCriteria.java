@@ -13,11 +13,20 @@ import org.junit.Test;
 public class TestCriteria {
 
     @Test
+    public void testAppend(){
+        String sql = Criteria.create()
+                .append("id in (select id from b where status = 2)")
+                .build("select * from a",false);
+        System.out.println(sql);
+    }
+
+    @Test
     public void testNull(){
-        Criteria criteria = new Criteria();
-        criteria.preNull("name").andEqualTo("name","name");
-        criteria.preNull("code").andEqualTo("code",null);
-        criteria.preNull("nick").andFullLike("nick",null);
+        Criteria criteria = Criteria.create()
+                .preNull("name").andEqualTo("name","name")
+                .preNull("code").andEqualTo("code",null)
+                .preNull("nick").andFullLike("nick",null)
+                .append("id in (select id from b where status = 2)");
         String b = criteria.build("select * from loan",false);
         System.out.println(b);
 
@@ -29,7 +38,7 @@ public class TestCriteria {
     @Test
     public void testEmpty(){
 
-        Criteria criteria = new Criteria();
+        Criteria criteria = Criteria.create();
         criteria.preEmpty("name").andEqualTo("name","name");
         criteria.preEmpty("code").andEqualTo("code",null);
         criteria.preEmpty("province").andEqualTo("province","");
