@@ -1,5 +1,6 @@
 package hello.programmer.distribute.zk;
 
+import hello.programmer.distribute.Constant;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
 import org.apache.curator.retry.RetryNTimes;
@@ -12,7 +13,7 @@ import org.apache.zookeeper.CreateMode;
  */
 public class CuratorClientTest {
     /** Zookeeper info */
-    private static final String ZK_ADDRESS = "192.168.200.234:2181";
+    private static final String ZK_ADDRESS = Constant.ZK_HOST;
     private static final String ZK_PATH = "/zktest";
 
     public static void main(String[] args) throws Exception {
@@ -28,7 +29,7 @@ public class CuratorClientTest {
         // 2.1 Create node
         String data1 = "hello";
         print("create", ZK_PATH, data1);
-        client.create().withMode(CreateMode.EPHEMERAL).
+        client.create().creatingParentContainersIfNeeded().withMode(CreateMode.EPHEMERAL).
                 forPath(ZK_PATH+"/tempr", data1.getBytes());
 
         // 2.2 Get node and data

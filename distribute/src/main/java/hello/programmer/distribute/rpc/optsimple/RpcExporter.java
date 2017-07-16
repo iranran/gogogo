@@ -85,6 +85,7 @@ public class RpcExporter implements Server{
                 String interfaceName = input.readUTF();
 
                 Class<?> service = serviceRegistry.get(interfaceName);
+                System.out.println(service);
                 String methodName = input.readUTF();
                 Class<?>[] parameterTypes = (Class<?>[])input.readObject();
                 Object[] arguments = (Object[])input.readObject();
