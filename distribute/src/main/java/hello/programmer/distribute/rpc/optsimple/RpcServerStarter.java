@@ -14,7 +14,10 @@ import org.apache.zookeeper.CreateMode;
 public class RpcServerStarter {
     public static void main(String[] args) {
         try{
-            Server serviceServer = new RpcExporter("localhost",8082);
+            String host = "localhost";
+            int port = 9000 + new java.util.Random().nextInt(100);
+            System.out.println(port);
+            Server serviceServer = new RpcExporter(host,port);
             serviceServer.register(EchoService.class, EchoServiceImpl.class);
 
 
@@ -29,12 +32,13 @@ public class RpcServerStarter {
             // 2.1 Create node
             String data1 = "hello";
             client.create().creatingParentContainersIfNeeded().withMode(CreateMode.EPHEMERAL).
-                    forPath(Constant.ZK_PATH + "/" + "localhost:8082", data1.getBytes());
+                    forPath(Constant.ZK_PATH + "/" + host + ":" + port, data1.getBytes());
 
             serviceServer.start();
         }
         catch (Exception e){
 
+            e.printStackTrace();
         }
     }
 }

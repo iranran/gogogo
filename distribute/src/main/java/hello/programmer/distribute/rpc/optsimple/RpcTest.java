@@ -1,8 +1,10 @@
 package hello.programmer.distribute.rpc.optsimple;
 
+import com.google.common.net.HostAndPort;
 import hello.programmer.distribute.Constant;
 import hello.programmer.distribute.rpc.optsimple.api.EchoDomain;
 import hello.programmer.distribute.rpc.optsimple.api.EchoService;
+import hello.programmer.distribute.rpc.optsimple.loadbalence.LbClient;
 import hello.programmer.distribute.rpc.optsimple.provider.EchoServiceImpl;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
@@ -25,16 +27,18 @@ public class RpcTest {
         );
         client.start();
 
-        List<String> list = client.getChildren().forPath(Constant.ZK_PATH);
-        System.out.println(list);
-        String host = list.get(0).split(":")[0];
-        int port = Integer.parseInt(list.get(0).split(":")[1]);
+        //Thread.sleep(15000);
+
+        LbClient lbClient = new LbClient(client);
+        LbClient.HostAndPort hostAndPort = lbClient.getHostAndPort();
+
 
         RpcImporter<EchoService> importer = new RpcImporter<>();
-        EchoService echo = importer.importer(EchoService.class,new InetSocketAddress(host,port));
-        System.out.println(echo);
+        EchoService echo = importer.importer(EchoService.class,new InetSocketAddress(hostAndPort.getHost(),hostAndPort.getPort()));
+        System.out.println(hostAndPort);
         for(int i=0; i<100; i++){
-            System.out.println(echo.echo("hi " + i));
+            //echo.echo("hi " + i);
+            System.out.println(lbClient.getHostAndPort());
         }
 
         EchoDomain domain = new EchoDomain();
