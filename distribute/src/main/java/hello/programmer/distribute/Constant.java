@@ -5,7 +5,8 @@ package hello.programmer.distribute;
  */
 public class Constant{
 
-    public static final String ZK_HOST = "localhost:2181";
+    //public static final String ZK_HOST = "localhost:2181";
+    public static final String ZK_HOST = "192.168.200.235:2181";
 
     public static final String ZK_PATH = "/zktest";
 
