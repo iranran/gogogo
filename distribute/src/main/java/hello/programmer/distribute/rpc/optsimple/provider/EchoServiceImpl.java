@@ -10,6 +10,7 @@ public class EchoServiceImpl implements EchoService {
 
     @Override
     public String echo(String ping) {
+        System.out.println(ping);
         return ping != null ? ping + "--> I am OK!" : "I am OK!";
     }
 

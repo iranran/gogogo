@@ -6,8 +6,9 @@ package hello.programmer;
  */
 public class App 
 {
-    public static void main( String[] args )
-    {
-        System.out.println( "Hello World!" );
+    public static void main( String[] args ){
+        int i = 0;
+
+        System.out.println( new java.util.Random().nextInt(5) );
     }
 }

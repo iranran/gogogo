@@ -29,18 +29,22 @@ public class RpcTest {
 
         //Thread.sleep(15000);
 
-        LbClient lbClient = new LbClient(client);
-        LbClient.HostAndPort hostAndPort = lbClient.getHostAndPort();
 
 
         RpcImporter<EchoService> importer = new RpcImporter<>();
-        EchoService echo = importer.importer(EchoService.class,new InetSocketAddress(hostAndPort.getHost(),hostAndPort.getPort()));
-        System.out.println(hostAndPort);
-        for(int i=0; i<100; i++){
+
+        for(int i=0; i<1000; i++){
             //echo.echo("hi " + i);
-            System.out.println(lbClient.getHostAndPort());
+            try {
+                Thread.sleep(1000);
+                EchoService echo = importer.importer(EchoService.class,client);
+                echo.echo("i am " + i);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
 
+        EchoService echo = importer.importer(EchoService.class,client);
         EchoDomain domain = new EchoDomain();
         domain.setName("ha");
         domain.setPassword("@#$@#$");

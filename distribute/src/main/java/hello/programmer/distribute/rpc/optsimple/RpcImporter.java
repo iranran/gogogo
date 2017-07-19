@@ -1,5 +1,9 @@
 package hello.programmer.distribute.rpc.optsimple;
 
+import hello.programmer.distribute.rpc.optsimple.api.EchoService;
+import hello.programmer.distribute.rpc.optsimple.loadbalence.LbClient;
+import org.apache.curator.framework.CuratorFramework;
+
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.lang.reflect.InvocationHandler;
@@ -13,7 +17,7 @@ import java.net.Socket;
  */
 public class RpcImporter<T> {
 
-    public T importer(final Class<?> serviceInterface, final InetSocketAddress addr){
+    public T importer(final Class<?> serviceInterface, final CuratorFramework client){
         return (T) Proxy.newProxyInstance(serviceInterface.getClassLoader(),new Class<?>[]{
                         serviceInterface},
                 new InvocationHandler(){
@@ -25,6 +29,11 @@ public class RpcImporter<T> {
 
                         try {
                             socket = new Socket();
+
+                            LbClient lbClient = new LbClient(client);
+                            LbClient.HostAndPort hostAndPort = lbClient.getHostAndPort(serviceInterface);
+                            InetSocketAddress addr = new InetSocketAddress(hostAndPort.getHost(),hostAndPort.getPort());
+
                             socket.connect(addr);
                             output = new ObjectOutputStream(socket.getOutputStream());
                             output.writeUTF(serviceInterface.getName());
@@ -34,12 +43,17 @@ public class RpcImporter<T> {
                             input = new ObjectInputStream(socket.getInputStream());
                             return input.readObject();
                         }
+                        catch (Exception e){
+
+                        }
                         finally {
                             if(socket != null) socket.close();
                             if(output != null) output.close();
                             if(input != null) input.close();
                         }
+                        return null;
                     }
+
                 }
         );
     }
