@@ -1,5 +1,7 @@
 package hello.programmer.common.database.query;
 
+import hello.programmer.common.basic.Combo2;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -322,6 +324,80 @@ public  class Criteria {
 
     /**
      *
+     * @return
+     */
+    public String build(){
+        StringBuffer buffer = new StringBuffer();
+        for(int i = 0; i < criterions.size(); i++){
+            Criterion criterion = criterions.get(i);
+
+            if(i != 0){
+                buffer.append(" AND ");
+            }
+
+            if(criterion.isNoValue()){
+                buffer.append(criterion.getCondition());
+            }
+
+            if(criterion.isSingleValue()){
+                buffer.append(criterion.getCondition()).append(" ");
+                Object v = criterion.getValue();
+
+                boolean isString = !criterion.isColumnEq() && (v instanceof String || v instanceof Date);
+
+                buffer.append(isString ? "'" + v +"'" : v);
+            }
+
+            if(criterion.isBetweenValue()){
+                buffer.append(criterion.getCondition()).append(" ");
+                Object v = criterion.getValue();
+                buffer.append(v instanceof String || v instanceof Date ? "'" + v +"'" : v);
+
+                Object sv = criterion.getSecondValue();
+                buffer.append(" AND ").append(sv instanceof String || sv instanceof Date ? "'" + sv +"'" : sv);
+            }
+
+            if(criterion.isListValue()){
+                buffer.append(criterion.getCondition()).append("(");
+                List<Object> objects = (List<Object>)criterion.getValue();
+                for(int j=0; j<objects.size(); j++){
+                    Object obj = objects.get(j);
+                    if(obj instanceof String || obj instanceof Date){
+                        buffer.append("'" + obj +"'");
+                    }
+                    else{
+                        buffer.append(obj);
+                    }
+                    if(j != objects.size() - 1){
+                        buffer.append(",");
+                    }
+                }
+                buffer.append(")");
+            }
+        }
+
+
+        for(int i = 0; i < appendCondtions.size(); i++){
+            if(i == 0 && criterions.size() == 0){
+                buffer.append(appendCondtions.get(i));
+            }
+            else{
+                buffer.append(" AND " + appendCondtions.get(i));
+            }
+
+        }
+
+        String whereString = buffer.toString();
+        if(whereString == null || whereString.length() == 0){
+            return "";
+        }
+
+        return whereString;
+    }
+
+
+    /**
+     *
      * @param sql
      * @param withWhere
      * @return
@@ -394,14 +470,10 @@ public  class Criteria {
 
         String _sql = sql + (withWhere ? " AND " + whereString : " WHERE " + whereString);
 
-//        if(orderByClause != null && orderByClause.trim().length() > 0){
-//            _sql += " ORDER BY " + orderByClause;
-//        }
-
         return _sql;
     }
 
-    public String build2(String sql,boolean withWhere){
+    public Combo2<String,Object[]> build2(){
         StringBuffer buffer = new StringBuffer();
         List<Object> params = new ArrayList<>();
 
@@ -420,7 +492,7 @@ public  class Criteria {
                 Object v = criterion.getValue();
 
                 boolean isString = !criterion.isColumnEq() && (v instanceof String || v instanceof Date);
-                v = isString ? "'" + v +"'" : v;
+                //v = isString ? "'" + v +"'" : v;
                 if(criterion.isColumnEq()){
                     buffer.append(v);
                 }
@@ -436,13 +508,13 @@ public  class Criteria {
                 Object v = criterion.getValue();
                 //buffer.append(v instanceof String || v instanceof Date ? "'" + v +"'" : v);
 
-                params.add(v instanceof String || v instanceof Date ? "'" + v +"'" : v);
+                params.add(v);
                 buffer.append("?");
 
                 Object sv = criterion.getSecondValue();
                 //buffer.append(" AND ").append(sv instanceof String || sv instanceof Date ? "'" + sv +"'" : sv);
 
-                params.add(v instanceof String || v instanceof Date ? "'" + v +"'" : v);
+                params.add(sv);
                 buffer.append(" AND ?");
             }
 
@@ -456,7 +528,7 @@ public  class Criteria {
                     Object obj = objects.get(j);
                     if(obj instanceof String || obj instanceof Date){
                        // buffer.append("'" + obj +"'");
-                        params.add("'" + obj +"'");
+                        params.add( obj );
                     }
                     else{
                         //buffer.append(obj);
@@ -470,7 +542,7 @@ public  class Criteria {
             }
         }
 
-        String _sql = sql + (withWhere ? " AND " + buffer.toString() : " WHERE " + buffer.toString());
+        //String _sql = sql + (withWhere ? " AND " + buffer.toString() : " WHERE " + buffer.toString());
 
 //        if(orderByClause != null && orderByClause.trim().length() > 0){
 //            _sql += " ORDER BY " + orderByClause;
@@ -478,7 +550,8 @@ public  class Criteria {
 
         System.out.println(params);
 
-        return _sql;
+        Combo2<String,Object[]> combo2 = new Combo2(buffer.toString(),params.toArray());
+        return combo2;
     }
 
     private void addCriterion(String condition) {

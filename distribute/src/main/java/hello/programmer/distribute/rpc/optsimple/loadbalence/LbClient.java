@@ -18,10 +18,16 @@ public class LbClient{
 
     private Map<String,RpcServiceInfo> rpcMap;
 
+    private static Map<String,Long> brokenHost = new HashMap<>();
+
+    public void addBrokenHost(String host , int port){
+        brokenHost.put(host + ":" + port,System.currentTimeMillis());
+        System.out.println(brokenHost);
+    }
+
     private void init(){
         try {
             List<String> infos = client.getChildren().forPath(Constant.ZK_PATH);
-            System.out.println(infos);
             rpcMap = new HashMap<>();
             for (String serviceName : infos) {
                 RpcServiceInfo info = new RpcServiceInfo();
@@ -47,6 +53,7 @@ public class LbClient{
             e.printStackTrace();
         }
     }
+
     public LbClient(CuratorFramework client){
         this.client = client;
 
@@ -95,51 +102,33 @@ public class LbClient{
     }
 
     public HostAndPort getHostAndPort(Class iface){
+        System.out.println("getHostAndPort"+iface);
         String name = iface.getName();
 
         RpcServiceInfo info = rpcMap.get(name);
 
         List<String> hosts = info.getHostInfos();
 
-        System.out.println(hosts);
-        String _hap = hosts.get(new java.util.Random().nextInt(hosts.size()));
+        List<String> activeHosts = new ArrayList<>();
+        for(String host : hosts){
+
+            Long time = brokenHost.get(host);
+
+            System.out.println(host + " " +time+" "+brokenHost);
+            if(time != null)
+            System.err.println(time + " "+(System.currentTimeMillis() - time));
+            if(time != null && (System.currentTimeMillis() - time) < 10000){
+                continue;
+            }
+            activeHosts.add(host);
+        }
+        System.out.println("acti->"+activeHosts);
+        String _hap = activeHosts.get(new java.util.Random().nextInt(activeHosts.size()));
         return new HostAndPort(_hap.split(":")[0],Integer.parseInt(_hap.split(":")[1]));
         //return list.get(new java.util.Random().nextInt(size));
     }
 
-    public class HostAndPort{
-        String host;
-        int port;
 
-        public HostAndPort(String host, int port) {
-            this.host = host;
-            this.port = port;
-        }
-
-        public String getHost() {
-            return host;
-        }
-
-        public void setHost(String host) {
-            this.host = host;
-        }
-
-        public int getPort() {
-            return port;
-        }
-
-        public void setPort(int port) {
-            this.port = port;
-        }
-
-        @Override
-        public String toString() {
-            return "HostAndPort{" +
-                    "host='" + host + '\'' +
-                    ", port=" + port +
-                    '}';
-        }
-    }
 
 
 

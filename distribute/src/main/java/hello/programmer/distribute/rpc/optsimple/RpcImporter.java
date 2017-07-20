@@ -1,6 +1,7 @@
 package hello.programmer.distribute.rpc.optsimple;
 
 import hello.programmer.distribute.rpc.optsimple.api.EchoService;
+import hello.programmer.distribute.rpc.optsimple.loadbalence.HostAndPort;
 import hello.programmer.distribute.rpc.optsimple.loadbalence.LbClient;
 import org.apache.curator.framework.CuratorFramework;
 
@@ -9,6 +10,7 @@ import java.io.ObjectOutputStream;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.net.ConnectException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 
@@ -26,12 +28,13 @@ public class RpcImporter<T> {
                         Socket socket = null;
                         ObjectOutputStream output = null;
                         ObjectInputStream input = null;
-
+                        LbClient lbClient = new LbClient(client);
+                        HostAndPort hostAndPort = lbClient.getHostAndPort(serviceInterface);
                         try {
                             socket = new Socket();
 
-                            LbClient lbClient = new LbClient(client);
-                            LbClient.HostAndPort hostAndPort = lbClient.getHostAndPort(serviceInterface);
+
+
                             InetSocketAddress addr = new InetSocketAddress(hostAndPort.getHost(),hostAndPort.getPort());
 
                             socket.connect(addr);
@@ -44,7 +47,10 @@ public class RpcImporter<T> {
                             return input.readObject();
                         }
                         catch (Exception e){
-
+                            e.printStackTrace();
+                            if(e instanceof ConnectException){
+                                lbClient.addBrokenHost(hostAndPort.getHost(),hostAndPort.getPort());
+                            }
                         }
                         finally {
                             if(socket != null) socket.close();
