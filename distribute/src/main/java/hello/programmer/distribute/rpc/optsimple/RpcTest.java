@@ -4,6 +4,7 @@ import com.google.common.net.HostAndPort;
 import hello.programmer.distribute.Constant;
 import hello.programmer.distribute.rpc.optsimple.api.EchoDomain;
 import hello.programmer.distribute.rpc.optsimple.api.EchoService;
+import hello.programmer.distribute.rpc.optsimple.api.HelloService;
 import hello.programmer.distribute.rpc.optsimple.loadbalence.LbClient;
 import hello.programmer.distribute.rpc.optsimple.provider.EchoServiceImpl;
 import org.apache.curator.framework.CuratorFramework;
@@ -36,18 +37,19 @@ public class RpcTest {
         for(int i=0; i<1000; i++){
             //echo.echo("hi " + i);
             try {
-                Thread.sleep(1000);
+                Thread.sleep(1);
                 EchoService echo = importer.importer(EchoService.class,client);
-                echo.echo("i am " + i);
+                //echo.echo("i am " + i);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
 
-        EchoService echo = importer.importer(EchoService.class,client);
-        EchoDomain domain = new EchoDomain();
-        domain.setName("ha");
-        domain.setPassword("@#$@#$");
-        System.out.println(echo.echo(domain));
+        for(int i =0;i<100; i++){
+            RpcImporter<HelloService> importer2 = new RpcImporter<>();
+            HelloService helloService = importer2.importer(HelloService.class,client);
+            helloService.hello("hihi");
+        }
+
     }
 }

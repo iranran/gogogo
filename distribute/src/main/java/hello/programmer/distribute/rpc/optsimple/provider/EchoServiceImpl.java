@@ -1,11 +1,13 @@
 package hello.programmer.distribute.rpc.optsimple.provider;
 
+import hello.programmer.distribute.rpc.optsimple.RpcService;
 import hello.programmer.distribute.rpc.optsimple.api.EchoDomain;
 import hello.programmer.distribute.rpc.optsimple.api.EchoService;
 
 /**
  * Created on 2017-7-11.
  */
+@RpcService("EchoService")
 public class EchoServiceImpl implements EchoService {
 
     @Override

@@ -1,5 +1,11 @@
 package hello.programmer.distribute.rpc.optsimple;
 
+import hello.programmer.distribute.Constant;
+import hello.programmer.distribute.rpc.optsimple.api.EchoService;
+import org.apache.curator.framework.CuratorFramework;
+import org.apache.zookeeper.CreateMode;
+import org.apache.zookeeper.data.Stat;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -53,8 +59,21 @@ public class RpcExporter implements Server{
     }
 
     @Override
-    public void register(Class serviceInterface, Class impl) {
+    public void register(Class serviceInterface, Class impl,CuratorFramework client) throws Exception{
         serviceRegistry.put(serviceInterface.getName(), impl);
+
+        String servicePath = Constant.ZK_PATH + "/" + serviceInterface.getName();
+        Stat stat = client.checkExists().forPath(servicePath);
+        if(stat == null){
+            client.create().creatingParentContainersIfNeeded().withMode(CreateMode.PERSISTENT).
+                    forPath(servicePath, "".getBytes());
+        }
+        else {
+            System.out.println(stat);
+        }
+
+        client.create().creatingParentContainersIfNeeded().withMode(CreateMode.EPHEMERAL_SEQUENTIAL).
+                forPath(servicePath +"/address-", (host + ":" + port).getBytes());
     }
 
     @Override
