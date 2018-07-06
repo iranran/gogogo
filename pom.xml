@@ -13,6 +13,7 @@
     <module>commontools</module>
     <module>learning</module>
     <module>distribute</module>
+      <module>eslearning</module>
   </modules>
 
   <name>gogogo</name>
