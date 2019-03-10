@@ -9,6 +9,7 @@
  */
 package hello.programmer.es;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -58,5 +59,9 @@ public class News {
 
     public void setTags(List<String> tags) {
         this.tags = tags;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(new Date(1539662400000L));
     }
 }

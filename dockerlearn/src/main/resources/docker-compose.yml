@@ -1,0 +1,74 @@
+version: '3.1'
+services:
+#  mq-namesrv.bluehelix:
+#    build:
+#      context: .docker
+#      dockerfile: namesrv.Dockerfile
+#    ports:
+#    - '9876:9876'
+#  mq-broker.bluehelix:
+#    build:
+#      context: .docker
+#      dockerfile: broker.Dockerfile
+#    entrypoint:
+#    - "/bh/app/rocketmq/bin/mqbroker"
+#    - "--namesrvAddr"
+#    - "mq-namesrv.bluehelix:9876"
+#    - "--configFile"
+#    - "/bh/app/rocketmq/conf/broker.conf"
+#    ports:
+#    - '10911:10911'
+  common-server:
+    image: registry.bhex.io/bhop/bhex-common-service:release-2019-0220-01
+#    depends_on:
+#      - common-server-db
+#    environment:
+#    - JAVA_HEAP_OPTS='-Xmx512M -Xms128M -XX:MaxDirectMemorySize=128M'
+    links:
+    - redis:hive-redis1
+    - db:common-server-db
+    ports:
+      - '7320:7320'
+      - '7220:7220'
+  redis:
+    image: redis:4.0
+    ports:
+    - '6379:6379'
+
+#  db:
+#    image: mysql:5.7
+#    restart: always
+#    command: --default-authentication-plugin=mysql_native_password
+#    volumes:
+#      - data:/mysql
+#      - ./mysql/config/my.cnf:/etc/my.cnf
+#      - ./mysql/init:/docker-entrypoint-initdb.d/
+#    ports:
+#      - '3308:3306'
+
+  db:
+    image: mysql:5.7
+    restart: always
+    command: --default-authentication-plugin=mysql_native_password
+    ports:
+      - '3308:3306'
+    environment:
+      - MYSQL_ROOT_PASSWORD=abc123
+      - MYSQL_DATABASE=fecshop_trace
+    volumes:
+      - mysql_data=/var/lib/mysql
+      #- data=/var/lib/mysql
+#      - ./mysql/config/my.cnf:/etc/my.cnf
+#      - ./mysql/init:/docker-entrypoint-initdb.d/
+volumes:
+  mysql_data:
+  data:
+
+#
+#  broker-server-db:
+#    image: mysql:5.7
+#    ports:
+#    - '3307:3307'
+#    environment:
+#    - MYSQL_ROOT_PASSWORD=broker@456
+#    - MYSQL_DATABASE=broker

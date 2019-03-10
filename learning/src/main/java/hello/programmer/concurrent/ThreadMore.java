@@ -12,6 +12,7 @@ import java.util.concurrent.Future;
 public class ThreadMore {
     public static void ha() throws Exception{
         ExecutorService service = Executors.newFixedThreadPool(2);
+
         Future future = service.submit(new Runnable() {
             @Override
             public void run() {
@@ -24,6 +25,7 @@ public class ThreadMore {
             }
         });
         System.out.println(future.get());
+
         //if(future.get() != null){
             service.shutdown();
         //}

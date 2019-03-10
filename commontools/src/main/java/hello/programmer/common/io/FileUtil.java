@@ -306,16 +306,8 @@ public class FileUtil extends FileUtils{
 	}
 	
 	public static void main(String[] args) throws IOException {
-		List<String> lines = readLines("C:\\Users\\BJ0179\\Documents\\WeChat Files\\liwei0002012\\Files\\to_Chao_0710_1.csv");
-		List<String> strings = new ArrayList<>();
-		for(String line : lines){
-			String[] arr = line.split(",");
-			String userid = arr[0].split("\"")[1];
-			strings.add(userid);
-		}
-		System.out.println(strings.size());
-		System.out.println("select user_id,amount,trans_date from ast_outed_asset_matched_record where id in("+String.join(",",strings)+");");
-	}
+
+			}
 
 
 
